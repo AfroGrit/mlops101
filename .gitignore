@@ -1,0 +1,26 @@
+# General
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+.env
+.venv
+*.swp
+
+# Data
+*.csv
+*.parquet
+*.feather
+
+# ML specific
+*.joblib
+*.pkl
+*.h5
+*.keras
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Kubernetes
+*.kubeconfig
