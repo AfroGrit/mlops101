@@ -29,5 +29,15 @@ jobs:
           dsl-compile --py pipelines/training_pipeline.py --output pipelines/training_pipeline.yaml
 
       - name: Submit to Kubeflow
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          KUBEFLOW_ENDPOINT: ${{ secrets.KUBEFLOW_ENDPOINT }}
         run: |
-          kfp pipeline upload -p ${{ env.PIPELINE_NAME }} pipelines/training_pipeline.yaml
+          # Configure cluster access
+          mkdir -p ~/.kube
+          echo "$KUBECONFIG" > ~/.kube/config
+
+          # Submit pipeline
+          kfp --endpoint $KUBEFLOW_ENDPOINT pipeline upload \
+            -p mlops101-pipeline \
+            pipelines/training_pipeline.yaml
