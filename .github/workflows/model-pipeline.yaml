@@ -1,0 +1,33 @@
+name: Model Training Pipeline
+on:
+  push:
+    paths:
+      - 'ml/models/**'
+      - 'pipelines/**'
+      - '.github/workflows/model-pipeline.yaml'
+
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+    env:
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install kfp kubeflow-tensorflow-training
+
+      - name: Compile pipeline
+        run: |
+          dsl-compile --py pipelines/training_pipeline.py --output pipelines/training_pipeline.yaml
+
+      - name: Submit to Kubeflow
+        run: |
+          kfp pipeline upload -p ${{ env.PIPELINE_NAME }} pipelines/training_pipeline.yaml
