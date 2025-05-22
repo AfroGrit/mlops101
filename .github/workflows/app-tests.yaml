@@ -1,0 +1,22 @@
+name: Spark Job CI
+on:
+  push:
+    paths:
+      - 'apps/spark-jobs/job1/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Spark image
+        run: |
+          cd apps/spark-jobs/job1
+          docker build -t your-registry/mlops101-spark-job1:$GITHUB_SHA .
+
+      - name: Deploy to Kubernetes
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          kubectl apply -f infra/kubernetes/spark-job1.yaml

@@ -1,0 +1,11 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: spark-job1
+spec:
+  template:
+    spec:
+      containers:
+      - name: spark
+        image: your-registry/mlops101-spark-job1:latest
+      restartPolicy: Never
