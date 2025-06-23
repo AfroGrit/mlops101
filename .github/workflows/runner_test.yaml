@@ -1,0 +1,10 @@
+name: Runner test
+
+on:
+  push:
+
+jobs:
+  hello-world-test:
+    runs-on: [self-hosted]
+    steps:
+      - run: echo "hello world"
