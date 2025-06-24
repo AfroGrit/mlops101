@@ -7,4 +7,4 @@ jobs:
   hello-world-test:
     runs-on: [self-hosted]
     steps:
-      - run: echo "hello world - I think we are connected"
+      - run: echo "hello world."
